@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Not the root folder since it contains heavy binaries 
+./root
+./root/*
