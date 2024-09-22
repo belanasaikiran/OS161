@@ -108,6 +108,13 @@ syscall(struct trapframe *tf)
 		err = sys___time((userptr_t)tf->tf_a0,
 				 (userptr_t)tf->tf_a1);
 		break;
+		
+		// Lab 2: Enable Sys_exit
+		case SYS__exit:
+		sys__exit((int)tf->tf_a0);
+		/* sys__exit does not return, execution should not get here */
+		panic("unexpected return from sys__exit");
+		break;
 #ifdef UW
 	case SYS_write:
 	  err = sys_write((int)tf->tf_a0,
@@ -115,11 +122,7 @@ syscall(struct trapframe *tf)
 			  (int)tf->tf_a2,
 			  (int *)(&retval));
 	  break;
-	case SYS__exit:
-	  sys__exit((int)tf->tf_a0);
-	  /* sys__exit does not return, execution should not get here */
-	  panic("unexpected return from sys__exit");
-	  break;
+
 	case SYS_getpid:
 	  err = sys_getpid((pid_t *)&retval);
 	  break;
@@ -180,4 +183,16 @@ void
 enter_forked_process(struct trapframe *tf)
 {
 	(void)tf;
+}
+
+
+void sys__exit(int exitCode){
+	// handling the exit code
+	kprintf("Exit code: %d\n", exitCode);
+
+	//clean up and terminate the thread properly here
+	thread_exit_with_exitcode(exitCode); // Lab 2: A custom function defined in thread.c
+
+	//prevent returning after calling _exit
+	panic("sys__exit: Thread did not exit properly\n");
 }
