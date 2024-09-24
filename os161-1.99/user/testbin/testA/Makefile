@@ -1,5 +1,4 @@
-# Lab 2: Q2 - Implementing exit() system call
-# Makefile for test_exit
+# Makefile for userthreads
 
 TOP=../../..
 .include "$(TOP)/mk/os161.config.mk"
@@ -9,3 +8,4 @@ SRCS=testA.c
 BINDIR=/testbin
 
 .include "$(TOP)/mk/os161.prog.mk"
+

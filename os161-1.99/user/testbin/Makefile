@@ -4,7 +4,7 @@
 
 TOP=../..
 .include "$(TOP)/mk/os161.config.mk"
-# Lab 2: Q2 - Implementing exit() system call - by adding exit_test to the list of programs
+
 SUBDIRS=add argtest badcall bigfile conman crash ctest dirconc dirseek \
 	dirtest f_test farm faulter filetest forkbomb forktest guzzle \
 	hash hog huge kitchen malloctest matmult palin parallelvm psort \

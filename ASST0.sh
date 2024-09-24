@@ -1,11 +1,11 @@
-!/bin/bash
+#!/bin/bash
 
 cd /root/cs350-os161/os161-1.99/kern/conf
 
 ./config ASST0
 
 cd ../compile/ASST0
-
+bmake clean
 bmake depend
 bmake
 bmake install

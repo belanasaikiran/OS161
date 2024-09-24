@@ -31,7 +31,6 @@
 #define _SYSCALL_H_
 
 
-
 struct trapframe; /* from <machine/trapframe.h> */
 
 /*
@@ -39,12 +38,6 @@ struct trapframe; /* from <machine/trapframe.h> */
  */
 
 void syscall(struct trapframe *tf);
-
-// Lab 2: Add prototypes for your system calls here.
-void sys_exit(int exitCode);
-
-// Lab 2: Q3 - Add a prototype for printint
-int sys_printint(int c);
 
 /*
  * Support functions.
@@ -64,6 +57,13 @@ void enter_new_process(int argc, userptr_t argv, vaddr_t stackptr,
 
 int sys_reboot(int code);
 int sys___time(userptr_t user_seconds, userptr_t user_nanoseconds);
+
+
+// Lab 2
+void sys__exit(int exitcode); // Lab 2: Part B
+int sys_printint(int c); // Lab 2: Part C
+int sys_reversestring(const char *str, int len); // Lab 2: Part D
+
 
 #ifdef UW
 int sys_write(int fdesc,userptr_t ubuf,unsigned int nbytes,int *retval);

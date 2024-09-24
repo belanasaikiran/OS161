@@ -108,30 +108,29 @@ syscall(struct trapframe *tf)
 		err = sys___time((userptr_t)tf->tf_a0,
 				 (userptr_t)tf->tf_a1);
 		break;
-		
-		// Lab 2: Enable Sys_exit
-		case SYS__exitwithcode:
-		sys_exit((int)tf->tf_a0);
-		/* sys__exit does not return, execution should not get here */
-		panic("unexpected return from sys__exit");
-		break;
 
-		case SYS_printint: // Lab 2: Q3 - Add a case for printint
-		err = sys_printint(tf->tf_a0);
-		break;
-#ifdef UW	
+		// Lab 2
+		case SYS___exitwithcode: // Lab 2: Q2
+			sys__exit((int)tf->tf_a0);
+			/* sys__exit does not return, execution should not get here */
+			panic("unexpected return from sys__exit");
+			break;
+
+		case SYS_printint: // Lab 2: Q3
+			err = sys_printint((int)tf->tf_a0);
+			break;
+#ifdef UW
 	case SYS_write:
-	  err = sys_write((int)tf->tf_a0,	
+	  err = sys_write((int)tf->tf_a0,
 			  (userptr_t)tf->tf_a1,
 			  (int)tf->tf_a2,
 			  (int *)(&retval));
 	  break;
 	case SYS__exit:
-	sys__exit((int)tf->tf_a0);
-	/* sys__exit does not return, execution should not get here */
-	panic("unexpected return from sys__exit");
-	break;
-
+	  sys__exit((int)tf->tf_a0);
+	  /* sys__exit does not return, execution should not get here */
+	  panic("unexpected return from sys__exit");
+	  break;
 	case SYS_getpid:
 	  err = sys_getpid((pid_t *)&retval);
 	  break;
@@ -193,6 +192,3 @@ enter_forked_process(struct trapframe *tf)
 {
 	(void)tf;
 }
-
-
-

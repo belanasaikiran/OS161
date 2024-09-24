@@ -1,38 +1,45 @@
 #include <types.h>
-#include <kern/errno.h>
-#include <kern/unistd.h>
-#include <thread.h>
 #include <lib.h>
-#include <uio.h>
 #include <syscall.h>
-#include <vnode.h>
-#include <vfs.h>
+#include <test.h>
+#include <thread.h>
+#include <kern/unistd.h>
 #include <current.h>
-#include <proc.h>
 
+// Lab 2: Part B
+void sys__exit(int exitcode) {
+    kprintf("exit: (%d)\n", exitcode);
 
-int sys_printint(int c) { // Lab 2: Q3 - Add a prototype for printint
-    // Print the integer
-    kprintf("%d\n", c);
+    kprintf("Thread %s exited with code %d\n", curthread->t_name, exitcode);
 
-    // Return 0 if divisible by 2, otherwise return 1
+    thread_exit();
+
+    panic("sys__exit: Thread did not exit properly\n");
+}
+
+// Lab 2: Part C
+int sys_printint(int c) { 
+    kprintf("Given Number: %d\n", c);
+
     return (c % 2 == 0) ? 0 : 1;
-};
+}
 
-/*
-* System Call used to exit out of infinite loop
-*/
-void sys_exit(int exitCode){ // Lab 2: Q2: Implementing _exit()
-	// handling the exit code
-	kprintf("Exit code: %d\n", exitCode);
+// Implement a simplified system call named int reversestring(const char *str, int len) 
 
-	//WE print the exit code here
-	kprintf("Thread %s exited with code %d\n", curthread->t_name, exitCode);
+// This system call should accept a string and length of the string as input and print the reverse of the string 
+// using the internal kprintf( ) function. The return value should be 1 if the length of the string is multiple of 
+// 5 or 0 otherwise. 
 
-	//clean up the thread - default/original thread exit code.
-	thread_exit();
+// Lab 2: Part D
+int sys_reversestring(const char *str, int len) { 
+    kprintf("Given String: %s\n", str);
 
-	//prevent returning after calling _exit
-	panic("sys__exit: Thread did not exit properly\n");
-};
+    for (int i = len - 1; i >= 0; i--) {
+        kprintf("%c", str[i]);
+    }
+
+    kprintf("\n");
+
+    return (len % 5 == 0) ? 1 : 0;
+}
 

@@ -114,6 +114,11 @@
 #define __DEAD
 #endif
 
+// Lab 2
+int printint(int c); // Lab 2: Part C
+void _exit(int exitCode); // Lab 2: Part B
+int reversestring(const char *str, int len); // Lab 2: Part D
+
 /* Required. */
 __DEAD void _exit(int code);
 int execv(const char *prog, char *const *args);
@@ -163,7 +168,7 @@ int __getcwd(char *buf, size_t buflen);
 
 char *getcwd(char *buf, size_t buflen);		/* calls __getcwd */
 time_t time(time_t *seconds);			/* calls __time */
-void exit(int exitCode); // Lab 2: Q2 Enable _exit
-int printint(int c); // Lab 2: Q3 - Add a prototype for printint
+
+
 
 #endif /* _UNISTD_H_ */
