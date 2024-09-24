@@ -54,3 +54,5 @@ dkms.conf
 # Not the root folder since it contains heavy binaries 
 root/*
 root
+os161-1.99/build/*
+os161-1.99/build
