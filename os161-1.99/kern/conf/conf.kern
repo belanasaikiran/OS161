@@ -378,6 +378,7 @@ file      syscall/time_syscalls.c
 # UW additions
 file      syscall/proc_syscalls.c
 file      syscall/file_syscalls.c
+file      syscall/simple_syscalls.c
 
 #
 # Startup and initialization

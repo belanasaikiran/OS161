@@ -197,6 +197,8 @@
 #define SYS_reboot       119
 //#define SYS___sysctl   120
 
+#define SYS_printint    121 // Lab 2: Q3 - Add a case for printint
+#define SYS__exitwithcode 122 // Lab 2: Q2 - Add a case for exitwithcode
 /*CALLEND*/
 
 

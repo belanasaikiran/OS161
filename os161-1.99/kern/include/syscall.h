@@ -30,8 +30,6 @@
 #ifndef _SYSCALL_H_
 #define _SYSCALL_H_
 
-// Lab 2: Defining a unique system call for _exit() 
-#define SYS_exit 1
 
 
 struct trapframe; /* from <machine/trapframe.h> */
@@ -42,9 +40,11 @@ struct trapframe; /* from <machine/trapframe.h> */
 
 void syscall(struct trapframe *tf);
 
-
 // Lab 2: Add prototypes for your system calls here.
-void sys__exit(int exitCode);
+void sys_exit(int exitCode);
+
+// Lab 2: Q3 - Add a prototype for printint
+int sys_printint(int c);
 
 /*
  * Support functions.

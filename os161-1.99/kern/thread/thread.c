@@ -1208,11 +1208,3 @@ interprocessor_interrupt(void)
 	spinlock_release(&curcpu->c_ipi_lock);
 }
 
-// Lab 2 - Thread Exit with Code
-void thread_exit_with_code(int exitCode){
-	//WE print the exit code here
-	kprintf("Thread %s exited with code %d\n", curthread->t_name, exitCode);
-
-	//clean up the thread - default/original thread exit code.
-	thread_exit();
-}

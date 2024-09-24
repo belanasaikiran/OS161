@@ -163,5 +163,7 @@ int __getcwd(char *buf, size_t buflen);
 
 char *getcwd(char *buf, size_t buflen);		/* calls __getcwd */
 time_t time(time_t *seconds);			/* calls __time */
+void exit(int exitCode); // Lab 2: Q2 Enable _exit
+int printint(int c); // Lab 2: Q3 - Add a prototype for printint
 
 #endif /* _UNISTD_H_ */
