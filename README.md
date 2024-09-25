@@ -46,3 +46,10 @@ To run the kernel:
 cd /root/cs350-os161/root
 sys161 kernel-ASST0
 ```
+
+
+## External References:
+
+1. [Adding System Calls](https://cs.fit.edu/~eribeiro/teaching/cse4001/addsystemcalls.pdf)
+
+2. [System Calls](https://ops-class.org/asst/2/)
