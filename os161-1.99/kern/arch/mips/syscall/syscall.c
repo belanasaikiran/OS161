@@ -110,14 +110,18 @@ syscall(struct trapframe *tf)
 		break;
 
 		// Lab 2
-		case SYS___exitwithcode: // Lab 2: Q2
+		case SYS___exitwithcode: // Lab 2: Part B
 			sys__exit((int)tf->tf_a0);
 			/* sys__exit does not return, execution should not get here */
 			panic("unexpected return from sys__exit");
 			break;
 
-		case SYS_printint: // Lab 2: Q3
+		case SYS_printint: // Lab 2: Part C
 			err = sys_printint((int)tf->tf_a0);
+			break;
+
+		case SYS_reversestring: // Lab 2: Part D
+			err = sys_reversestring((const char *)tf->tf_a0, (int)tf->tf_a1);
 			break;
 #ifdef UW
 	case SYS_write:
