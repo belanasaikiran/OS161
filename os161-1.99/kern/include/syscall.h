@@ -60,7 +60,7 @@ int sys___time(userptr_t user_seconds, userptr_t user_nanoseconds);
 
 
 // Lab 2
-void sys__exit(int exitcode); // Lab 2: Part B
+void sys___exit(int exitcode); // Lab 2: Part B
 int sys_printint(int c); // Lab 2: Part C
 int sys_reversestring(const char *str, int len); // Lab 2: Part D
 

@@ -7,7 +7,7 @@
 #include <current.h>
 
 // Lab 2: Part B
-void sys__exit(int exitcode) {
+void sys___exit(int exitcode) {
     kprintf("exit: (%d)\n", exitcode);
 
     kprintf("Thread %s exited with code %d\n", curthread->t_name, exitcode);

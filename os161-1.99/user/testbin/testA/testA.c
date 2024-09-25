@@ -1,12 +1,14 @@
 #include <unistd.h>
 #include <stdio.h>
+#include "testA.h"
+
 
 int exitcode = 42;
 
 // Lab 2: Part E. Create a test program, named testprint, to test the printint( ) system call developed in 
 // Part C. Pass 5 integers (any) in a for loop and see if these are printed or not
 
-int testprint()
+void testprint(void)
 {
 
     for (int i = 0; i < 5; i++) {
@@ -14,7 +16,6 @@ int testprint()
     }
     _exit(exitcode); // Lab 2: Part B
 
-    return 0;
 };
 
 
@@ -22,12 +23,10 @@ int testprint()
 // Lab 2: Part F. Create another test program, named testreverse to use the reversestring( ) system call 
 // developed in Part D. Pass any string as argument.
 
-int testreverse()
+void testreverse(void)
 {
     reversestring("Hello", 5); // Lab 2: Part D
     _exit(exitcode); // Lab 2: Part B
-
-    return 0;
 };
 
 
