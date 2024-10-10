@@ -50,6 +50,7 @@
 #define SYS_fork         0
 #define SYS_vfork        1
 #define SYS_execv        2
+// Lab 2: Part B
 #define SYS__exit        3
 #define SYS_waitpid      4
 #define SYS_getpid       5
@@ -198,9 +199,10 @@
 //#define SYS___sysctl   120
 
 // Lab 2
-#define SYS___exitwithcode      121 // Lab 2: Part B
-#define SYS_printint            122 // Lab 2: Part C
-#define SYS_reversestring       123 // Lab 2: Part D
+// Lab 2: part C
+#define SYS_printint            122 
+// Lab 2: Part D
+#define SYS_reversestring       123 
 
 /*CALLEND*/
 

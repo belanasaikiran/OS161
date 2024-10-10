@@ -109,12 +109,12 @@ syscall(struct trapframe *tf)
 				 (userptr_t)tf->tf_a1);
 		break;
 
-		// Lab 2
-		case SYS___exitwithcode: // Lab 2: Part B
-			sys__exit((int)tf->tf_a0);
-			/* sys__exit does not return, execution should not get here */
-			panic("unexpected return from sys__exit");
-			break;
+		// Lab 2: Part B
+		case SYS__exit:
+		sys__exit((int)tf->tf_a0);
+		/* sys__exit does not return, execution should not get here */
+		panic("unexpected return from sys__exit");
+		break;
 
 		case SYS_printint: // Lab 2: Part C
 			err = sys_printint((int)tf->tf_a0);
@@ -130,11 +130,7 @@ syscall(struct trapframe *tf)
 			  (int)tf->tf_a2,
 			  (int *)(&retval));
 	  break;
-	case SYS__exit:
-	  sys__exit((int)tf->tf_a0);
-	  /* sys__exit does not return, execution should not get here */
-	  panic("unexpected return from sys__exit");
-	  break;
+
 	case SYS_getpid:
 	  err = sys_getpid((pid_t *)&retval);
 	  break;

@@ -285,7 +285,7 @@ cmd_quit(int nargs, char **args)
 
 	vfs_sync();
 	sys_reboot(RB_POWEROFF);
-	thread_exit();
+	thread_exit(0); // for now, I'm passing this value to just print something
 	return 0;
 }
 

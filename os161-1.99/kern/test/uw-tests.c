@@ -84,7 +84,7 @@ add_thread(void *junk, unsigned long num)
 
 	}
 	V(donesem);
-	thread_exit();
+	thread_exit(0);
 }
 
 /* This thread substract values from a global variable. */
@@ -117,7 +117,7 @@ sub_thread(void *junk, unsigned long num)
 
 	}
 	V(donesem);
-	thread_exit();
+	thread_exit(0);
 }
 
 int
@@ -251,7 +251,7 @@ vmstats_thread(void *junk, unsigned long num)
 	}
 
 	V(donesem);
-	thread_exit();
+	thread_exit(0);
 }
 
 int

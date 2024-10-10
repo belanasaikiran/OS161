@@ -1,5 +1,10 @@
 #!/bin/bash
 
+
+cd /root/cs350-os161/os161-1.99
+./configure --ostree=/root/cs350-os161/root --toolprefix=cs350-
+
+
 cd /root/cs350-os161/os161-1.99/kern/conf
 
 ./config ASST0
@@ -22,5 +27,5 @@ bmake install
 # Running the kernel
 
 cd /root/cs350-os161/root
-exec bash
-# sys161 kernel-ASST0 #execute/run the kernel
+#exec bash
+sys161 kernel-ASST0 #execute/run the kernel

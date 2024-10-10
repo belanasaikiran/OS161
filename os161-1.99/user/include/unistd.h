@@ -114,10 +114,10 @@
 #define __DEAD
 #endif
 
-// Lab 2
-int printint(int c); // Lab 2: Part C
-void _exit(int exitCode); // Lab 2: Part B
-int reversestring(const char *str, int len); // Lab 2: Part D
+// Lab 2: Part C
+int printint(int c);
+// Lab 2: Part D
+int reversestring(const char *str, int len); 
 
 /* Required. */
 __DEAD void _exit(int code);

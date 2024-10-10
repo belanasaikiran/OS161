@@ -13,6 +13,7 @@
   /* this implementation of sys__exit does not do anything with the exit code */
   /* this needs to be fixed to get exit() and waitpid() working properly */
 
+// Lab 2: Part B
 void sys__exit(int exitcode) {
 
   struct addrspace *as;
@@ -43,7 +44,10 @@ void sys__exit(int exitcode) {
      will wake up the kernel menu thread */
   proc_destroy(p);
   
-  thread_exit();
+
+// Lab 2: Part B
+  thread_exit(exitcode);
+  
   /* thread_exit() does not return, so we should never get here */
   panic("return from thread_exit in sys_exit\n");
 }

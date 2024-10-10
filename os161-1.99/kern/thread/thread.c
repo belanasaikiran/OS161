@@ -403,7 +403,7 @@ cpu_hatch(unsigned software_number)
 	kprintf("cpu%u: %s\n", software_number, cpu_identify());
 
 	V(cpu_startup_sem);
-	thread_exit();
+	thread_exit(0);
 }
 
 /*
@@ -765,7 +765,7 @@ thread_startup(void (*entrypoint)(void *data1, unsigned long data2),
 	entrypoint(data1, data2);
 
 	/* Done. */
-	thread_exit();
+	thread_exit(0);
 }
 
 /*
@@ -778,8 +778,10 @@ thread_startup(void (*entrypoint)(void *data1, unsigned long data2),
  * Does not return.
  */
 void
-thread_exit(void)
+thread_exit(int exitcode)
 {
+
+
 	struct thread *cur;
 
 	cur = curthread;
@@ -795,6 +797,12 @@ thread_exit(void)
 #else // UW
 	proc_remthread(cur);
 #endif // UW
+
+	// Lab 2: Part B - Doing a spin lock so the kprintf output is not jumbled or garbled
+	spinlock_acquire(&curcpu->c_runqueue_lock); 
+	kprintf("Exiting thread with code \n");
+	kprintf("%d\n", exitcode);
+	spinlock_release(&curcpu->c_runqueue_lock);
 
 	/* Make sure we *are* detached (move this only if you're sure!) */
 	KASSERT(cur->t_proc == NULL);

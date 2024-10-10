@@ -59,14 +59,16 @@ int sys_reboot(int code);
 int sys___time(userptr_t user_seconds, userptr_t user_nanoseconds);
 
 
-// Lab 2
-void sys___exit(int exitcode); // Lab 2: Part B
-int sys_printint(int c); // Lab 2: Part C
-int sys_reversestring(const char *str, int len); // Lab 2: Part D
+/*************** Lab 2 ***************/
+// Lab 2: Part C
+int sys_printint(int c); 
+// Lab 2: Part D
+int sys_reversestring(const char *str, int len); 
 
 
 #ifdef UW
 int sys_write(int fdesc,userptr_t ubuf,unsigned int nbytes,int *retval);
+// Lab 2: Part B
 void sys__exit(int exitcode);
 int sys_getpid(pid_t *retval);
 int sys_waitpid(pid_t pid, userptr_t status, int options, pid_t *retval);
