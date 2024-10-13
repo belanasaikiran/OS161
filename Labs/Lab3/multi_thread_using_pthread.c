@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 // Global Variables
-int buffer = 0; // 1-item buffer to hold packet id
+int buffer = -1; // 1-item buffer to hold packet id
 int available_packets; // Tracks how many packets are available
 int X, N, M; // X = number of packets, N = number of user threads, M = number of kernel threads
 int current_turn = 1; // Keeps track of which user thread's turn it is
@@ -37,23 +37,25 @@ void* user_thread(void* arg) {
         // It's this thread's turn, and a packet is available
         add_random_delay(my_id);
         printf("User level thread %d is going to put data in a packet\n", my_id);
-        
+
         buffer = my_id; // Simulate data in the packet
         available_packets--; // Decrease packet count
         current_turn++; // Move to the next user thread's turn
         if (current_turn > N) {
             current_turn = 1; // Loop back to thread 1
         }
-        threads_served++; // Increase the served thread count
 
-        pthread_cond_signal(&packet_available_cond); // Notify kernel thread a packet is ready
-        pthread_mutex_unlock(&buffer_mutex);
-        return NULL;
+        // Signal the kernel thread that a packet is ready
+        pthread_cond_signal(&packet_available_cond); 
+
+        // Wait until the packet is consumed before producing again
+        pthread_cond_wait(&packet_consumed_cond, &buffer_mutex);
     }
-
     pthread_mutex_unlock(&buffer_mutex);
+
     return NULL;
 }
+
 
 // Kernel Thread Function
 void* kernel_thread(void* arg) {
@@ -64,7 +66,7 @@ void* kernel_thread(void* arg) {
         pthread_mutex_lock(&buffer_mutex);
 
         // Wait until a packet is available to process
-        while (available_packets == X) { 
+        while (buffer == -1) { 
             if (threads_served >= N) {
                 pthread_mutex_unlock(&buffer_mutex);
                 return NULL; // All user threads served, exit
@@ -76,16 +78,21 @@ void* kernel_thread(void* arg) {
 
         // Process the packet
         printf("user thread %d getting served\n", buffer);
-        buffer = 0;
-        available_packets++; // Increase available packet count
+        buffer = -1; // Clear the buffer after serving
 
-        // Signal user threads that a packet is available
+        available_packets++; // Increase available packet count
+        threads_served++; // Increment threads served after processing
+
+        // Signal user threads that they can continue producing
         pthread_cond_broadcast(&user_turn_cond);
+        pthread_cond_signal(&packet_consumed_cond);
 
         pthread_mutex_unlock(&buffer_mutex);
     }
     return NULL;
 }
+
+
 
 // Main Function
 int main(int argc, char* argv[]) {
