@@ -5,8 +5,8 @@
 
 #define QUEUE_SIZE 30 // This will vary
 
-pthread_mutex_t mutex;
-pthread_cond_t cond_producer, cond_consumer;
+pthread_mutex_t mutex; // Mutex for shared queue
+pthread_cond_t cond_producer, cond_consumer; // Condition variables for producer and consumer
 int queue[QUEUE_SIZE]; // Shared queue
 int count = 0; // Number of items in queue
 int items_produced = 0; // Number of items produced
