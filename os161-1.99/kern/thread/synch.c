@@ -162,8 +162,22 @@ lock_create(const char *name)
                 kfree(lock);
                 return NULL;
         }
-        
         // add stuff here as needed
+
+        // Lab 4 - Q1
+        // init the lock holder to NULL
+        lock->lk_holder = NULL;
+
+        // create a wait channel for the lock to put threads to sleep
+        lock->lk_wchan = wchan_create(lock->lk_name);
+        if(lock->lk_wchan == NULL){
+                kfree(lock->lk_name);
+                kfree(lock);
+                return NULL;
+        }
+
+        // init the spinlock to protect the lock's internal state
+        spinlock_init(&lock->lk_spinlock); // this just initiates the spinlock doesn't start it . Just setting up by allocating necessary resources
         
         return lock;
 }
@@ -171,7 +185,15 @@ lock_create(const char *name)
 void
 lock_destroy(struct lock *lock)
 {
+        // Lab 4 - Q1
         KASSERT(lock != NULL);
+        // set lock holder to NULL
+        // making sure that lock is not held by any other thread while destroying
+        KASSERT(lock->lk_holder == NULL);
+
+        // clean up the spin lock and waiting channel
+        spinlock_cleanup(&lock->lk_spinlock);
+        wchan_destroy(lock->lk_wchan);
 
         // add stuff here as needed
         
@@ -183,6 +205,27 @@ void
 lock_acquire(struct lock *lock)
 {
         // Write this
+        // Lab 4 - Q1
+        KASSERT(lock != NULL);
+        KASSERT(curthread->t_in_interrupt == false); // May not block in an interrupt handler.
+
+        // Acquire the spinlock to protect the lock's internal state by making it atomic
+        spinlock_acquire(&lock->lk_spinlock);
+
+        // if the lock is already held by some other thread, we put this current thread to sleep
+        while(lock->lk_holder != NULL){
+                wchan_lock(lock->lk_wchan); // lock the wait channel
+                spinlock_release(&lock->lk_spinlock); // release the spinlock while we sleep
+                wchan_sleep(lock->lk_wchan); // we sleep until we are woken up by the thread that holds the lock
+                spinlock_acquire(&lock->lk_spinlock); // Re-acquire the spinlock after waking up
+        } 
+
+        // Now that the lock is free, we can acquire it
+        lock->lk_holder = curthread; // set the lock holder to the current thread
+
+        // Release the spinlock
+        spinlock_release(&lock->lk_spinlock);
+
 
         (void)lock;  // suppress warning until code gets written
 }
@@ -191,6 +234,21 @@ void
 lock_release(struct lock *lock)
 {
         // Write this
+        // Lab 4 - Q1
+        KASSERT(lock != NULL);
+        KASSERT(lock->lk_holder == curthread); // Only the thread holding the lock may release it
+
+        // Acquire spinlock 
+        spinlock_acquire(&lock->lk_spinlock);
+
+        // release the lock and set the holder to NULLL
+        lock->lk_holder = NULL;
+
+        // Wake up one thread that is sleeping on the lock
+        wchan_wakeone(lock->lk_wchan);
+
+        // Release the spinlock
+        spinlock_release(&lock->lk_spinlock);
 
         (void)lock;  // suppress warning until code gets written
 }
@@ -199,10 +257,16 @@ bool
 lock_do_i_hold(struct lock *lock)
 {
         // Write this
-
+        // Lab 4 - Q1
         (void)lock;  // suppress warning until code gets written
 
-        return true; // dummy until code gets written
+        KASSERT(lock != NULL);
+
+        // just checkig if the current thread holds the lock
+
+        bool doIHoldLock = lock->lk_holder == curthread; // check if the current thread holds the lock
+
+        return doIHoldLock; // dummy until code gets written
 }
 
 ////////////////////////////////////////////////////////////

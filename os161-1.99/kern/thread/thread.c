@@ -800,7 +800,7 @@ thread_exit(int exitcode)
 
 	// Lab 2: Part B - Doing a spin lock so the kprintf output is not jumbled or garbled
 	spinlock_acquire(&curcpu->c_runqueue_lock); 
-	kprintf("Exiting thread with code \n");
+	kprintf("Exiting thread with code: ");
 	kprintf("%d\n", exitcode);
 	spinlock_release(&curcpu->c_runqueue_lock);
 
