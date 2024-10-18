@@ -271,7 +271,7 @@ lock_do_i_hold(struct lock *lock)
 
 ////////////////////////////////////////////////////////////
 //
-// CV
+// CV - Condition Variable.
 
 
 struct cv *
@@ -291,6 +291,15 @@ cv_create(const char *name)
         }
         
         // add stuff here as needed
+        // Lab 4 - Q2
+        // Create a wait channel for the condition variable
+        cv->cv_wchan = wchan_create(cv->cv_name);
+        // free the memory if the wait channel is not created
+        if(cv->cv_wchan == NULL){
+                kfree(cv->cv_name);
+                kfree(cv);
+                return NULL;
+        }
         
         return cv;
 }
@@ -301,6 +310,9 @@ cv_destroy(struct cv *cv)
         KASSERT(cv != NULL);
 
         // add stuff here as needed
+        // Lab 4 - Q2
+        // Destroy the wait channel
+        wchan_destroy(cv->cv_wchan);
         
         kfree(cv->cv_name);
         kfree(cv);
@@ -310,22 +322,51 @@ void
 cv_wait(struct cv *cv, struct lock *lock)
 {
         // Write this
-        (void)cv;    // suppress warning until code gets written
-        (void)lock;  // suppress warning until code gets written
+        // Lab 4 - Q2
+        KASSERT(cv != NULL);
+        KASSERT(lock != NULL);
+        KASSERT(lock_do_i_hold(lock)); // Ensuring the current thread must hold the lock
+
+        // What does KASSERT do?
+        // KASSERT is a macro that checks if the condition is true. 
+        // If the condition is false, it will print an error message and halt the system. 
+        // It is used to check the correctness of the code.
+
+        // Atomically release the lock and put the thread to sleep
+        wchan_lock(cv->cv_wchan); // lock the cv's wait channel
+        lock_release(lock); // release the lock
+        wchan_sleep(cv->cv_wchan); // put the current thread to sleep on the cv's wait channel
+
+
+        // when the thread wakes up, it will re-acquire the lock
+        lock_acquire(lock); // re-acquire the lock before we return
+
 }
 
 void
 cv_signal(struct cv *cv, struct lock *lock)
 {
         // Write this
-	(void)cv;    // suppress warning until code gets written
-	(void)lock;  // suppress warning until code gets written
+        // Lab 4 - Q2
+        KASSERT(cv != NULL);
+        KASSERT(lock != NULL);
+        KASSERT(lock_do_i_hold(lock)); // Ensuring the current thread must hold the lock        
+
+        // Waking up one thread that is waiting on the cv's wait channel
+        wchan_wakeone(cv->cv_wchan);
+
 }
 
 void
 cv_broadcast(struct cv *cv, struct lock *lock)
 {
 	// Write this
-	(void)cv;    // suppress warning until code gets written
-	(void)lock;  // suppress warning until code gets written
+        // Lab 4 - Q2
+        KASSERT(cv != NULL);
+        KASSERT(lock != NULL);
+        KASSERT(lock_do_i_hold(lock)); // Ensuring the current thread must hold the lock
+
+
+        // Waking up all threads that are waiting on the cv's wait channel
+        wchan_wakeall(cv->cv_wchan);
 }
