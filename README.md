@@ -2,10 +2,7 @@
 
 ### Labs
 
-1. [Lab 2](./Labs/lab2.md)
-
-
-2. LAB1: Alternative to installing VirtualBox on MAC M1/M2/M3
+1. LAB1: Alternative to installing VirtualBox on MAC M1/M2/M3
 
 Posted on: Tuesday, September 10, 2024 4:38:32 PM EDT
 
@@ -46,6 +43,12 @@ To run the kernel:
 cd /root/cs350-os161/root
 sys161 kernel-ASST0
 ```
+
+
+2. [Lab 2](./Labs/lab2.md)
+
+3. [Lab 3 Report](./Labs/Lab3/Lab3_Report.md)
+
 
 
 ## External References:

@@ -75,6 +75,7 @@ void V(struct semaphore *);
 struct lock {
         char *lk_name;
         // add what you need here
+        // Lab 4 - Q1
         volatile struct thread *lk_holder; // thread holding the lock
         struct wchan *lk_wchan; // wait channel for threads sleeping on this lock
         struct spinlock lk_spinlock; // spinlock to protect the lock's internal state
@@ -117,6 +118,8 @@ void lock_destroy(struct lock *);
 struct cv {
         char *cv_name;
         // add what you need here
+        // Lab 4 - Q2
+        struct wchan *cv_wchan; // wait channel for threads sleeping on this CV
         // (don't forget to mark things volatile as needed)
 };
 

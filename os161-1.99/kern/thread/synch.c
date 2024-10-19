@@ -185,6 +185,7 @@ lock_create(const char *name)
 void
 lock_destroy(struct lock *lock)
 {
+        // add stuff here as needed
         // Lab 4 - Q1
         KASSERT(lock != NULL);
         // set lock holder to NULL
@@ -195,7 +196,6 @@ lock_destroy(struct lock *lock)
         spinlock_cleanup(&lock->lk_spinlock);
         wchan_destroy(lock->lk_wchan);
 
-        // add stuff here as needed
         
         kfree(lock->lk_name);
         kfree(lock);
@@ -227,7 +227,7 @@ lock_acquire(struct lock *lock)
         spinlock_release(&lock->lk_spinlock);
 
 
-        (void)lock;  // suppress warning until code gets written
+        // (void)lock;  // suppress warning until code gets written
 }
 
 void
@@ -250,7 +250,7 @@ lock_release(struct lock *lock)
         // Release the spinlock
         spinlock_release(&lock->lk_spinlock);
 
-        (void)lock;  // suppress warning until code gets written
+        // (void)lock;  // suppress warning until code gets written
 }
 
 bool

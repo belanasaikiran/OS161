@@ -1,5 +1,9 @@
 #!/bin/bash
 
+cd /root/cs350-os161/os161-1.99
+
+bmake clean
+
 
 cd /root/cs350-os161/os161-1.99
 ./configure --ostree=/root/cs350-os161/root --toolprefix=cs350-
